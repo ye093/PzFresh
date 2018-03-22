@@ -6,6 +6,8 @@ import com.yejy.app.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BlogServiceImpl implements BlogService {
     @Autowired
@@ -24,5 +26,10 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Integer addBlog(Blog blog) {
         return blogMapper.addBlog(blog);
+    }
+
+    @Override
+    public List<Blog> listBlogs() {
+        return blogMapper.list();
     }
 }
