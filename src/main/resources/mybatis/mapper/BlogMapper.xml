@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yejy.app.data.BlogMapper">
+    <resultMap id="blogmap" type="blog">
+        <id property="id" column="id" />
+        <id property="title" column="title" />
+        <id property="content" column="content" />
+        <id property="userCode" column="user_code" />
+    </resultMap>
+    <select id="selectBlog" resultMap="blogmap">
+        select * from blog where id = #{id}
+    </select>
+    <select id="sumBlog" resultType="integer">
+        SELECT COUNT(*) FROM blog
+    </select>
+    <insert id="addBlog">
+        INSERT INTO blog (title, content, user_code) VALUES (
+          #{title}, #{content}, #{userCode}
+        )
+    </insert>
+</mapper>

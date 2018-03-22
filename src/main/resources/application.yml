@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://rds1wvf83w5kn66m6eu2o.mysql.rds.aliyuncs.com/serp
+    username: pzfresh
+    password: Pzfresh2018
+mybatis:
+  type-aliases-package: com.yejy.app.model
+  configuration:
+    cache-enabled: true
+  mapper-locations: classpath:mybatis/mapper/*.xml
