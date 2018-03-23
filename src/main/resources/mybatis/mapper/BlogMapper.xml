@@ -5,9 +5,9 @@
 <mapper namespace="com.yejy.app.data.BlogMapper">
     <resultMap id="blogmap" type="blog">
         <id property="id" column="id" />
-        <id property="title" column="title" />
-        <id property="content" column="content" />
-        <id property="userCode" column="user_code" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="userCode" column="user_code" />
     </resultMap>
     <select id="selectBlog" resultMap="blogmap">
         select * from blog where id = #{id}
