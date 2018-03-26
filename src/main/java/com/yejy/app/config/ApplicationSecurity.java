@@ -1,7 +1,9 @@
 package com.yejy.app.config;
 
 import com.yejy.app.security.PzPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,11 +12,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurity  extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private AuthenticationProvider provider;  //注入我们自己的AuthenticationProvider
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(new PzPasswordEncoder())
-                .withUser("user").password("user123").roles("USER");
+        auth.authenticationProvider(provider);
+//        auth.inMemoryAuthentication().passwordEncoder(new PzPasswordEncoder())
+//                .withUser("user").password("user123").roles("USER");
     }
 
     @Override

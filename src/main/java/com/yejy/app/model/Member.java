@@ -1,9 +1,13 @@
 package com.yejy.app.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 
-public class Member implements Serializable {
+public class Member implements UserDetails,Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer memberId;
@@ -86,8 +90,38 @@ public class Member implements Serializable {
         this.userName = userName;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return mobile;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return "Y".equals(actived);
     }
 
     public void setPassword(String password) {

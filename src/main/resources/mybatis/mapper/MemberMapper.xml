@@ -29,6 +29,9 @@
         <result property="actived" column="actived" />
     </resultMap>
     <select id="getMember" resultMap="membermap">
-        SELECT * FROM crm_member WHERE mobile= #{mobile} AND password= #{password}
+        SELECT * FROM crm_member WHERE mobile= #{mobile}
+        <if test="password != null">
+            AND password= #{password}
+        </if>
     </select>
 </mapper>

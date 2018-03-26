@@ -1,5 +1,14 @@
 package com.yejy;
 
+import com.google.zxing.*;
+import com.google.zxing.Writer;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.DecoderResult;
+import com.google.zxing.oned.Code128Writer;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.Decoder;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,10 +19,15 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.security.Key;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainTest {
 
@@ -162,8 +176,38 @@ public class MainTest {
     }
 
     @Test
-    public void yeTest() {
-        BigDecimal a = BigDecimal.TEN;
-        System.out.println(a.toPlainString());
+    public void yeTest() throws Exception {
+//        String qrCode = encodeQRCode("http://www.hao123.com", 256, 256);
+//        System.out.println(qrCode);
+//
+        String text = encodeBarCode("12345a6789", 200, 70);
+        System.out.println(text);
+    }
+
+    /**
+     * 生成二维码
+     * @param content 内容
+     * @param width 长
+     * @param height 高
+     */
+    private String encodeQRCode(String content, int width, int height) throws WriterException, IOException {
+        Writer writer = new QRCodeWriter();
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.MARGIN, 0);
+        BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, width,
+                height, hints);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(matrix, "PNG", byteArrayOutputStream);
+        return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+    }
+
+    private String encodeBarCode(String content, int width, int height) throws WriterException, IOException {
+        Code128Writer writer = new Code128Writer();
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.MARGIN, 0);
+        BitMatrix matrix = writer.encode(content, BarcodeFormat.CODE_128, width, height, hints);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(matrix, "PNG", byteArrayOutputStream);
+        return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
     }
 }
