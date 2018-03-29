@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,8 +63,9 @@ public class LoginController {
                         .addClaims(data)
                         .signWith(SignatureAlgorithm.HS256, tokenKey)
                         .compact();
+        ResponseEntity responseEntity = new ResponseEntity(new BaseModel(0, "成功", member),null, HttpStatus.OK);
 
-        return ResponseEntity.ok(new BaseModel(0, "成功", member));
+        return responseEntity;
 
     }
 }
