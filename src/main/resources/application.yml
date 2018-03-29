@@ -10,9 +10,15 @@ logging:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://www.yejinyun.cn:3306/serp
+    url: jdbc:mysql://www.yejinyun.cn:3306/serp?useUnicode=true&characterEncoding=utf8
     username: yejy
     password: kfJINdifc186@*
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force-response: true
+      force: true
 
 mybatis:
   type-aliases-package: com.yejy.app.model

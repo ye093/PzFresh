@@ -3,15 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yejy.app.data.LoginRecordMapper">
-    <resultMap id="login_record_mapper" type="loginRecord">
-        <id property="recordId" column="record_id" />
-        <result property="type" column="type" />
-        <result property="memberId" column="member_id" />
-        <result property="loginTime" column="login_time" />
-        <result property="deviceName" column="device_name" />
-        <result property="enable" column="is_enabled" />
+    <resultMap id="record" type="loginrecord">
+        <id property="recordId" column="record_id"/>
+        <result property="type" column="type"/>
+        <result property="memberId" column="member_id"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="enable" column="is_enabled"/>
     </resultMap>
-    <select id="getLoginRecordByMemberId" resultMap="login_record_mapper">
-        SELECT record_id, type, member_id, login_time, device_name, is_enabled FROM login_record WHERE member_id=#{memberId} AND type=#{type}
+    <select id="getLoginRecordByMemberId" resultMap="record">
+        SELECT record_id, type, member_id, login_time, device_name, is_enabled FROM login_record
+         WHERE member_id=#{memberId} AND type=#{type}
     </select>
+
+    <insert id="addLoginRecord" parameterType="loginrecord" flushCache="true">
+      INSERT INTO login_record(type, member_id, login_time, device_name, is_enabled)
+       VALUES (#{type},#{memberId},#{loginTime}, #{deviceName}, #{enable})
+    </insert>
+
+    <update id="updateLoginRecord" parameterType="loginrecord" flushCache="true">
+      UPDATE login_record SET login_time=#{loginTime},device_name=#{deviceName},is_enabled=#{enable}
+        WHERE record_id=#{recordId}
+    </update>
 </mapper>

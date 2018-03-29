@@ -9,4 +9,8 @@ public interface LoginRecordMapper {
 
     LoginRecord getLoginRecordByMemberId(@Param("memberId") Integer memberId, @Param("type") Integer type);
 
+    Integer addLoginRecord(LoginRecord loginRecord);
+
+    Integer updateLoginRecord(LoginRecord loginRecord);
+
 }

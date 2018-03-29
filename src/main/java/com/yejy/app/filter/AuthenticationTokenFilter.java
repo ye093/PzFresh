@@ -54,7 +54,8 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
         HttpServletRequest request = (HttpServletRequest) req;
         String token = request.getHeader(headerKey);
         if (token == null || token.length() == 0) {
-            respMessage(res, ErrorCode.AUTH_FAILURE, null, "请先登录");
+//            respMessage(res, ErrorCode.AUTH_FAILURE, null, "请先登录");
+            chain.doFilter(req, res);
             return;
         }
         try {

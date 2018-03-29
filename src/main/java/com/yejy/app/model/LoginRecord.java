@@ -57,4 +57,16 @@ public class LoginRecord {
     public void setEnable(String enable) {
         this.enable = enable;
     }
+
+    @Override
+    public String toString() {
+        return "LoginRecord{" +
+                "recordId=" + recordId +
+                ", type=" + type +
+                ", memberId=" + memberId +
+                ", loginTime=" + loginTime +
+                ", deviceName='" + deviceName + '\'' +
+                ", enable='" + enable + '\'' +
+                '}';
+    }
 }

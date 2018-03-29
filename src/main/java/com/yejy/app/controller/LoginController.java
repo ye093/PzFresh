@@ -1,6 +1,8 @@
 package com.yejy.app.controller;
 
+import com.yejy.app.data.LoginRecordMapper;
 import com.yejy.app.model.BaseModel;
+import com.yejy.app.model.LoginRecord;
 import com.yejy.app.model.Member;
 import com.yejy.app.service.MemberService;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
 public class LoginController {
+
     @Autowired
     MemberService memberService;
 
@@ -38,9 +44,12 @@ public class LoginController {
     @Value("${token.header}")
     private String headerKey;
 
+    @Autowired
+    LoginRecordMapper loginRecordMapper;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<BaseModel> login(@RequestParam String mobile, @RequestParam String password,
-                                           @RequestParam Integer source) {
+    public ResponseEntity<BaseModel> login(@RequestParam(required = false) String mobile, @RequestParam(required = false) String password,
+                                           @RequestParam(required = false) Integer source) {
         if (mobile == null || password == null) {
             return ResponseEntity.ok(new BaseModel(-1, "参数错误", null));
         }
@@ -63,9 +72,35 @@ public class LoginController {
                         .addClaims(data)
                         .signWith(SignatureAlgorithm.HS256, tokenKey)
                         .compact();
-        ResponseEntity responseEntity = new ResponseEntity(new BaseModel(0, "成功", member),null, HttpStatus.OK);
 
-        return responseEntity;
+        LoginRecord loginRecord = new LoginRecord();
+        loginRecord.setMemberId(member.getMemberId());
+        loginRecord.setType(source);
+        loginRecord.setLoginTime(new Date(currentTimeMillis));
+        loginRecord.setEnable("Y");
+        LoginRecord existedRecord = loginRecordMapper.getLoginRecordByMemberId(member.getMemberId(), source);
+        int result = 0;
+        if (existedRecord != null) {
+            loginRecord.setRecordId(existedRecord.getRecordId());
+            result = loginRecordMapper.updateLoginRecord(loginRecord);
+        } else {
+            result = loginRecordMapper.addLoginRecord(loginRecord);
+        }
+        if (result == 1) {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("member_id", member.getMemberId());
+            map.put("card_no", member.getCardNo());
+            map.put("nick", member.getNick());
+            map.put("user_name", member.getUserName());
+            map.put("mobile", member.getMobile());
+            map.put("sex", member.getSex());
+            map.put("score", member.getScore());
+            MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+            header.add(headerKey, jwt);
+            return new ResponseEntity(new BaseModel(0, "成功", map),header, HttpStatus.OK);
+        }
+
+        return ResponseEntity.ok(new BaseModel(-1, "系统出错", null));
 
     }
 }

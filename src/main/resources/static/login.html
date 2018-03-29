@@ -5,9 +5,10 @@
     <title>登录页面</title>
 </head>
 <body>
-    <form action="/login/form" method="post">
-        <label>手机号:<input type="text" name="username"></label><br>
+    <form action="/login" method="post">
+        <label>手机号:<input type="text" name="mobile"></label><br>
         <label>密码：<input type="password" name="password"></label><br>
+        <input type="hidden" name="source" value="1">
         <input type="submit" value="提交">
     </form>
 

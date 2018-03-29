@@ -4,6 +4,7 @@ import com.yejy.app.filter.AuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class ApplicationSecurity  extends WebSecurityConfigurerAdapter {
+public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationProvider provider;  //注入我们自己的AuthenticationProvider
 
@@ -25,16 +26,16 @@ public class ApplicationSecurity  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests().anyRequest().permitAll().and().cors().disable().csrf().disable();
         http.formLogin().loginPage("/login.html")
-            .loginProcessingUrl("/login/form")
-            .failureUrl("/login-error.html").permitAll()  //表单登录，permitAll()表示这个不需要验证 登录页面，登录失败页面
-            .and()
-            .authorizeRequests().anyRequest().authenticated()
-            .and()
-            .csrf()
-            .disable()
-            .sessionManagement() // 定制我们自己的 session 策略
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 调整为让 Spring Security 不创建和使用 session
+                .failureUrl("/login-error.html").permitAll()  //表单登录，permitAll()表示这个不需要验证 登录页面，登录失败页面
+                .and()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/login").permitAll().anyRequest().authenticated()
+                .and()
+                .csrf()
+                .disable()
+                .sessionManagement() // 定制我们自己的 session 策略
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 调整为让 Spring Security 不创建和使用 session
 
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     }
