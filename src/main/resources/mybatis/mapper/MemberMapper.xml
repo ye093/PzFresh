@@ -34,4 +34,8 @@
             AND password= #{password}
         </if>
     </select>
+
+    <select id="getMemberById" resultMap="membermap">
+        SELECT * FROM crm_member WHERE member_id= #{member_id}
+    </select>
 </mapper>

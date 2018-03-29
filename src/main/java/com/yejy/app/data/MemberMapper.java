@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberMapper {
     Member getMember(@Param("mobile") String mobile, @Param("password") String password);
+
+    Member getMemberById(@Param("member_id") Integer memberId);
 }

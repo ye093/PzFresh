@@ -21,6 +21,6 @@
         )
     </insert>
     <select id="list" resultMap="blogmap">
-        SELECT * FROM blog;
+        SELECT * FROM blog
     </select>
 </mapper>
