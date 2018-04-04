@@ -1,18 +1,8 @@
 package com.yejy;
 
-import com.yejy.app.util.RuleCalculator;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-import org.junit.Assert;
-import org.junit.Test;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.security.Key;
-import java.text.SimpleDateFormat;
+import io.jsonwebtoken.*;
+import org.junit.Test;
 import java.util.*;
 
 public class MainTest {
@@ -62,28 +52,6 @@ public class MainTest {
         } catch (Exception e) {
             System.out.println("token error");
         }
-    }
-
-    @Test
-    public void yeTTT() throws ScriptException {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
-        String js = "qty>=3?(price*(qty-1)+20):amount";
-        Integer result = (Integer) engine.eval(js);
-        System.out.println(result);
-
-    }
-
-
-    @Test
-    public void yeTT() {
-        Map<String, String> params = new HashMap<>();
-        params.put("price", "10");
-        params.put("qty", "2");
-        params.put("amount", "50");
-        RuleCalculator ruleCalculator = new RuleCalculator(params);
-        String result = ruleCalculator.execute("<amount>>=50?<amount>-10:<amount>");
-        System.out.println(result);
     }
 
 
