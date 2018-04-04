@@ -30,7 +30,11 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         http.formLogin().loginPage("/login.html")
                 .failureUrl("/login-error.html").permitAll()  //表单登录，permitAll()表示这个不需要验证 登录页面，登录失败页面
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/login").permitAll().anyRequest().authenticated()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/login")
+                .permitAll()
+                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/alipay").permitAll() // 允许访问
+
+                .anyRequest().authenticated()
                 .and()
                 .csrf()
                 .disable()

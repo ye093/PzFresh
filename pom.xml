@@ -93,6 +93,12 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>-->
+
+        <dependency>
+            <groupId>com.alipay.api</groupId>
+            <artifactId>sdk-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
     
     <build>
@@ -100,6 +106,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                </configuration>
             </plugin>
         </plugins>
     </build>
